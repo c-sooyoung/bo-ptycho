@@ -12,14 +12,12 @@ def ptycho_run(config):
     # Add more ptycho engines here as needed
     # write their respective run functions and import them above
 
-
 def ptycho_error(config):
     ptycho_engine = config['ptycho']['engine']
 
     if ptycho_engine == 'fold_slice':
         from ptycho.fold_slice import error
         return error(config)
-
 
 def bo_initialize(config):
     bo_algorithm = config['bo']['algorithm']
@@ -33,7 +31,6 @@ def bo_initialize(config):
         bo_state = initialize(config)
     
     return bo_state
-
 
 def bo_ask(config, bo_state):
     bo_engine = config['bo']['algorithm']
@@ -51,7 +48,6 @@ def bo_ask(config, bo_state):
 
     return next_config
 
-
 def bo_tell(config, job_config, bo_state, y_value):
     bo_engine = config['bo']['algorithm']
 
@@ -64,7 +60,6 @@ def bo_tell(config, job_config, bo_state, y_value):
         bo_state = tell(config, job_config, bo_state, y_value)
     
     return bo_state
-
 
 def main(config):
 
