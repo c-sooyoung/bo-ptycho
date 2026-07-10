@@ -1,0 +1,23 @@
+#!/bin/bash
+#SBATCH --job-name=swim_test
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --gres=gpu:rtx-6000ada:1
+#SBATCH --time=100:00:00
+#SBATCH --output=/home/swim/slurm-logs/job_%j.log
+
+echo "TEST JOB"
+pwd
+hostname
+date
+
+export PATH=/home/shared/MATLAB/R2021a/bin:$PATH
+export PATH=/usr/local/cuda-11.4/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-11.4/lib64:$LD_LIBRARY_PATH
+
+source /home/swim/Si_project/wrapper/venv/bin/activate
+
+python -u bo-ptycho.py config.yaml
+
+echo "SLURM JOB FINISHED"
