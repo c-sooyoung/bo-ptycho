@@ -21,10 +21,6 @@ def ptycho_error(config):
         return error(config)
 
 
-
-
-
-
 def bo_initialize(config):
     bo_algorithm = config['bo']['algorithm']
 
@@ -61,17 +57,33 @@ def bo_tell(config, job_config, bo_state, y_value):
 
     if bo_engine == 'ucb':
         from bo.ucb import tell
-        bo_config = tell(job_config, bo_state, y_value)
+        bo_state = tell(job_config, bo_state, y_value)
     
     else:
         from bo.random import tell
-        bo_config = tell(job_config, bo_state, y_value)
+        bo_state = tell(config, job_config, bo_state, y_value)
     
-    return bo_config
+    return bo_state
 
 
+def main(config):
 
+    bo_state = bo_initialize(config)
 
+    max_iterations = config['bo']['max_iterations']
+
+    for _ in range(max_iterations):
+        job_config = bo_ask(config, bo_state)
+
+        ptycho_run(job_config)
+        y_value = ptycho_error(job_config)
+
+        bo_state = bo_tell(config, job_config, bo_state, y_value)
+
+        print(bo_state['train_x'])
+        print(bo_state['train_y'])
+
+    return bo_state
 
 
 if __name__ == "__main__":
@@ -82,9 +94,6 @@ if __name__ == "__main__":
     config_yaml = sys.argv[1]
     with open(config_yaml, 'r') as f:
         config = yaml.safe_load(f)
-
-    # ptycho_run(config_yaml)
-    # results = ptycho_results(config_yaml)
-    # new_config = bo_loop(config)
-    # print(new_config) # type: ignore
+    
+    main(config)
     

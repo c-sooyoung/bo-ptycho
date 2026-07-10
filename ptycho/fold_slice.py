@@ -6,19 +6,18 @@ import numpy as np
 from scipy.io import loadmat
 
 def fold_slice_translator(config):
-
-    result_dir = config['io']['result_dir']
+    fold_slice_result_dir = os.path.join(config['io']['result_dir'], 'fold_slice')
 
     fold_slice_dict = {}
     fold_slice_dict['raw_data'] = config['io']['input_data_path']
-    fold_slice_dict['result_dir'] = os.path.join(result_dir, '')
-    fold_slice_dict.update(config['ptycho']['fold_slice'])
+    fold_slice_dict['result_dir'] = os.path.join(fold_slice_result_dir, '')
+    fold_slice_dict.update(config['ptycho']['params'])
 
-    if os.path.exists(os.path.join(result_dir)):
-        shutil.rmtree(os.path.join(result_dir))
-    os.makedirs(os.path.join(result_dir))
+    if os.path.exists(os.path.join(fold_slice_result_dir)):
+        shutil.rmtree(os.path.join(fold_slice_result_dir))
+    os.makedirs(os.path.join(fold_slice_result_dir))
 
-    setup_txt = os.path.join(result_dir, 'setup.txt')
+    setup_txt = os.path.join(fold_slice_result_dir, 'setup.txt')
     with open(setup_txt, 'w') as f:
         f.write('\n\n')
         for key, value in fold_slice_dict.items():
@@ -58,16 +57,17 @@ def run(config):
 
 
 def error(config):
-    result_dir = config['io']['result_dir']
+    fold_slice_result_dir = os.path.join(config['io']['result_dir'], 'fold_slice')
     roi_dir = os.path.join(
-        result_dir,
-        f"{config['ptycho']['fold_slice']['scan_number']}",
-        f"roi{config['ptycho']['fold_slice']['roi_label']}"
+        fold_slice_result_dir,
+        f"{config['ptycho']['params']['scan_number']}",
+        f"roi{config['ptycho']['params']['roi_label']}"
     )
     output_dir = os.path.join(roi_dir, next(os.walk(roi_dir))[1][0])
     # image_path = os.path.join(output_dir, 'obj_phase_roi_sum', next(os.walk(os.path.join(output_dir, 'obj_phase_roi_sum')))[2][0])
-    result_mat = os.path.join(output_dir, f"Niter{config['ptycho']['fold_slice']['Niter']}.mat")
+    result_mat = os.path.join(output_dir, f"Niter{config['ptycho']['params']['Niter']}.mat")
     if not os.path.exists(result_mat):
         raise FileNotFoundError(f"Result directory {result_mat} does not exist. Please check the fold_slice output.")
     
-    return loadmat(result_mat)
+    # return loadmat(result_mat)
+    return 1

@@ -1,3 +1,6 @@
+results/
+old/
+
 *.mat
 *.tiff
 *.hdf5

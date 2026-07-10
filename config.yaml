@@ -20,11 +20,11 @@ ptycho:
     tilt_x: 2
     tilt_y: 0 
     scan_step_size: 0.36
-    Niter: 20
-    Niter_save_results: 10
+    Niter: 100
+    Niter_save_results: 100
     CBED_size: 192
     ADU: 1
-    extra_print_info: 'FIB'
+    extra_print_info: 'test'
     scan_number: 1
     gpu_id: 1
     roi_label: '0_Ndp64'
@@ -38,10 +38,14 @@ ptycho:
 
 bo:
   parallel_jobs: 4
-  algorithm: ucb
+  max_iterations: 100
+  algorithm: 'random'
   params:
     alpha_max:
     defocus: 150
     rot_ang: 1
     Nlayers:
     thickness: 150
+  train_x: '/home/swim/Si_project/wrapper/results/train_x.npy'
+  train_y: '/home/swim/Si_project/wrapper/results/train_y.npy'
+  
