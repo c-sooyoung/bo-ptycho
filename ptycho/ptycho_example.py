@@ -1,4 +1,6 @@
 from typing import Any
+import time
+import random
 from ptycho.ptycho_base import PtychoEngine
 
 class ExamplePtychoEngine(PtychoEngine):
@@ -11,7 +13,8 @@ class ExamplePtychoEngine(PtychoEngine):
 
     # run single ptychography job based on `config`
     def run(self) -> None:
-        pass
+        print("[ExamplePtychoEngine] Sleeping for 0.1 second.")
+        time.sleep(0.1)
     
     # save outputs to self._output
     def output(self) -> Any:
@@ -37,5 +40,5 @@ class ExamplePtychoEngine(PtychoEngine):
     def metric(self) -> float:
         if self._metric is None:
             output = self.output()
-            self._metric = 0.0
+            self._metric = random.uniform(0, 1) - (20 - self.config['ptycho']['params']['Nlayers'])**2 / 10
         return self._metric
