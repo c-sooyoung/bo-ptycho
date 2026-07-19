@@ -34,7 +34,7 @@ class FoldSlicePtychoEngine(PtychoEngine):
                 f.write(f"{key} {value}\n")
     
 
-    def run(self) -> None:
+    def run(self, header="") -> None:
         self.fold_slice_prepare()
 
         config = self.config
@@ -57,7 +57,7 @@ class FoldSlicePtychoEngine(PtychoEngine):
         )
 
         if not verbosity == 0:
-            header = '[fold slice]'
+            header = header + '[fold slice]'
             for line in p.stdout: # type: ignore
                 sys.stdout.write(f'{header} {line}')
             p.stdout.close() # type: ignore
@@ -107,5 +107,7 @@ class FoldSlicePtychoEngine(PtychoEngine):
     def metric(self) -> float:
         if self._metric is None:
             output = self.output()
-            self._metric = float(np.asarray(output['outputs']['fourier_error_out'][0]).squeeze()) # type: ignore
+            fourier_error = output['outputs']['fourier_error_out'][0][0].squeeze()
+            metric = float(fourier_error[-1])
+            self._metric = metric
         return self._metric
