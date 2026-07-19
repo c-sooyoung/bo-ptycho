@@ -7,21 +7,36 @@ import ptycho
 
 def main(config):
 
-    bo_engine = bo.RandomBOEngine(config)
+    randombo = bo.RandomBOEngine(config)
 
     max_iterations = config['bo']['max_iterations']
 
-    for _ in range(max_iterations):
-        job_config = bo_engine.ask()
+    for j in range(10):
+        job_config = randombo.ask()
 
         ptycho_engine = ptycho.FoldSlicePtychoEngine(job_config)
         ptycho_engine.run()
         y_value = ptycho_engine.metric()
 
-        bo_engine.tell(job_config, y_value)
+        randombo.tell(job_config, y_value)
 
-        print(bo_engine.state['train_x'])
-        print(bo_engine.state['train_y'])
+        print('[random] TRAIN_X\n', randombo.state['train_x'])
+        print('[random] TRAIN_Y\n', randombo.state['train_y'])
+
+
+    sobo = bo.SingleObjectiveBOEngine(config)
+
+    for j in range(max_iterations):
+        job_config = sobo.ask()
+
+        ptycho_engine = ptycho.FoldSlicePtychoEngine(job_config)
+        ptycho_engine.run()
+        y_value = ptycho_engine.metric()
+
+        sobo.tell(job_config, y_value)
+
+        print('[sobo] TRAIN_X\n', sobo.train_x)
+        print('[sobo] TRAIN_Y\n', sobo.train_y)
 
 
 if __name__ == "__main__":
