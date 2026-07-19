@@ -38,14 +38,19 @@ ptycho:
 
 bo:
   parallel_jobs: 4
-  max_iterations: 100
-  algorithm: 'random'
+  max_iterations: 64
+  mode: 'sobo'
+  acquisition: 'ucb'
   params:
     alpha_max:
-    defocus: 150
-    rot_ang: 1
+    defocus:
+      radius: 100
+    rot_ang:
     Nlayers:
-    thickness: 150
+      radius: 10
+      type: int
+    thickness:
+      radius: 100
   train_x: '/home/swim/Si_project/wrapper/results/train_x.npy'
   train_y: '/home/swim/Si_project/wrapper/results/train_y.npy'
   
