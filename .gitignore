@@ -1,5 +1,6 @@
 results/
 old/
+setup.txt
 
 *.mat
 *.tiff
@@ -359,3 +360,4 @@ codegen/
 # Cloud based storage dotfile
 .MATLABDriveTag
 
+setup.txt
