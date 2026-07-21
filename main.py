@@ -1,15 +1,21 @@
 import os
 import sys
 import yaml
+import shutil
 import numpy as np
 
 import bo
 import ptycho
 
-def main(config):
+def main(config_yaml):
+
+    with open(config_yaml, 'r') as f:
+        config = yaml.safe_load(f)
 
     result_dir = config['io']['result_dir']
     os.makedirs(result_dir, exist_ok=True)
+    shutil.copy(config_yaml, os.path.join(result_dir, os.path.basename(config_yaml)))
+
 
     randombo = bo.RandomBOEngine(config)
 
@@ -49,7 +55,5 @@ if __name__ == "__main__":
         sys.exit(1)
 
     config_yaml = sys.argv[1]
-    with open(config_yaml, 'r') as f:
-        config = yaml.safe_load(f)
     
-    main(config)
+    main(config_yaml)
