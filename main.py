@@ -1,22 +1,24 @@
 import os
 import sys
 import yaml
+import numpy as np
 
 import bo
 import ptycho
 
 def main(config):
 
-    randombo = bo.RandomBOEngine(config)
+    result_dir = config['io']['result_dir']
+    os.makedirs(result_dir, exist_ok=True)
 
-    max_iterations = config['bo']['max_iterations']
+    randombo = bo.RandomBOEngine(config)
 
     for j in range(10):
         job_config = randombo.ask()
 
         ptycho_engine = ptycho.FoldSlicePtychoEngine(job_config)
         ptycho_engine.run()
-        y_value = ptycho_engine.metric()
+        y_value = -np.log(ptycho_engine.metric())
 
         randombo.tell(job_config, y_value)
 
@@ -25,13 +27,15 @@ def main(config):
 
 
     sobo = bo.SingleObjectiveBOEngine(config)
+    sobo.train_x = randombo.state['train_x']
+    sobo.train_y = randombo.state['train_y']
 
-    for j in range(max_iterations):
+    for j in range(config['bo']['max_iterations']):
         job_config = sobo.ask()
 
         ptycho_engine = ptycho.FoldSlicePtychoEngine(job_config)
         ptycho_engine.run()
-        y_value = ptycho_engine.metric()
+        y_value = -np.log(ptycho_engine.metric())
 
         sobo.tell(job_config, y_value)
 

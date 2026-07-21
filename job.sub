@@ -19,6 +19,6 @@ export LD_LIBRARY_PATH=/usr/local/cuda-11.4/lib64:$LD_LIBRARY_PATH
 source /home/swim/Si_project/wrapper/venv/bin/activate
 
 cat config.yaml
-python -u bo-ptycho.py config.yaml
+python -u main.py config.yaml
 
 echo "SLURM JOB FINISHED"
