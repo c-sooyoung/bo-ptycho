@@ -40,5 +40,5 @@ class ExamplePtychoEngine(PtychoEngine):
     def metric(self) -> float:
         if self._metric is None:
             output = self.output()
-            self._metric = random.uniform(0, 1) - (20 - self.config['ptycho']['params']['Nlayers'])**2 / 10
+            self._metric = random.uniform(0, 1)
         return self._metric
