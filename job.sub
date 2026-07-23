@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=swim_test
+#SBATCH --job-name=jobname
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
@@ -7,7 +7,7 @@
 #SBATCH --time=100:00:00
 #SBATCH --output=/home/swim/slurm-logs/job_%j.log
 
-echo "TEST JOB"
+echo "JOBNAME"
 pwd
 hostname
 date
@@ -16,9 +16,10 @@ export PATH=/home/shared/MATLAB/R2021a/bin:$PATH
 export PATH=/usr/local/cuda-11.4/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/cuda-11.4/lib64:$LD_LIBRARY_PATH
 
-source /home/swim/Si_project/wrapper/venv/bin/activate
+source /home/swim/bo-ptycho/venv/bin/activate
 
 cat config.yaml
 python -u main.py config.yaml
 
+date
 echo "SLURM JOB FINISHED"

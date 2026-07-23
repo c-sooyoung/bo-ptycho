@@ -5,7 +5,7 @@ io:
 
 ptycho:
   engine: 'fold_slice'
-  path: '/home/swim/Si_project/lemon-ptychography/fold_slice'
+  path: '/home/swim/fold_slice'
   params:
     voltage: 200
     alpha_max: 30
@@ -24,7 +24,7 @@ ptycho:
     Niter_save_results: 50
     CBED_size: 192
     ADU: 1
-    extra_print_info: 'swim Si2V1_1.mat'
+    extra_print_info: ''
     scan_number: 1
     gpu_id: 1
     roi_label: '0_Ndp64'
