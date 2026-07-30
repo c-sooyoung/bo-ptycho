@@ -1,0 +1,6 @@
+- Clean up BO states
+- BO train_x/y transfer between engines for single job
+- fold_slice saving results
+- GPU dispatcher
+- template job sequences / yamls
+- 
