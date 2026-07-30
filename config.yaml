@@ -1,7 +1,7 @@
 io:
   input_data_path: '/home/swim/Si_project/data/Si2V1_1.mat'
-  result_dir: '/home/swim/Si_project/wrapper/results/260721'
-  verbosity: 1
+  result_dir: '/home/swim/bo-ptycho/results/260730'
+  verbosity: 0
 
 ptycho:
   engine: 'fold_slice'

@@ -38,7 +38,6 @@ class SingleObjectiveBOEngine(BOEngine):
 
         train_x_path = config["bo"].get("train_x")
         train_y_path = config["bo"].get("train_y")
-
         if train_x_path is not None and train_y_path is not None:
             if os.path.exists(train_x_path) and os.path.exists(train_y_path):
                 train_x = np.load(train_x_path)
@@ -168,7 +167,7 @@ class SingleObjectiveBOEngine(BOEngine):
         ])
 
         
-        train_x_path = config['bo'].get('train_x')
+        train_x_path = config['bo'].get('tain_x')
         train_y_path = config['bo'].get('train_y')
         if train_x_path is not None and train_y_path is not None:
             np.save(train_x_path, self.train_x)
