@@ -1,3 +1,8 @@
+job:
+  job_type: "random+sobo"
+  random_iters: 30
+  sobo_iters: 300
+
 io:
   input_data_path: '/home/swim/Si_project/data/Si2V1_1.mat'
   result_dir: '/home/swim/bo-ptycho/results/260730-2V'
@@ -37,10 +42,9 @@ ptycho:
     variable_probe: 'false'
 
 bo:
-  parallel_jobs: 1
-  max_iterations: 300
   mode: 'sobo'
   acquisition: 'ucb'
+  metric: 'log_fourier'
   params:
     alpha_max:
     defocus:
@@ -53,4 +57,3 @@ bo:
       radius: 100
   train_x:
   train_y:
-  
