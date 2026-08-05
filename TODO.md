@@ -1,6 +1,8 @@
+- tag publish version for Si reconstruction
 - Clean up BO states
 - BO train_x/y transfer between engines for single job
-- fold_slice saving results
-- GPU dispatcher
+- multi-GPU dispatcher
 - template job sequences / yamls
-- 
+- metric() function(s) for each ptycho engine
+- fold_slice: load diffractions / hdf5 files; change only param per job
+    - Possibly restructure PtychoEngine.__init__() to load data but not params
