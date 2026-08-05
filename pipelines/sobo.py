@@ -39,9 +39,9 @@ def sobo_pipeline(config):
         print(f"SOBO sampling; iteration {RANDOM_ITERS + j}")
         job_config = sobo.ask()
         ptycho_engine = PTYCHOENGINE(job_config)
-        ptycho_engine.run(run_id=f"bo-{j:03d}")
+        ptycho_engine.run(run_id=f"bo-{RANDOM_ITERS + j:03d}")
         y_value = ptycho_engine.metric(METRIC)
         sobo.tell(job_config, y_value)
         with open(bo_txt, "a") as f:
             p = [f'{job_config['ptycho']['params'][key]:.2f}' for key in sobo.params]
-            f.write(f"{j: 8d}\t{y_value:.4f}\t{"\t".join(p)}\n")
+            f.write(f"{RANDOM_ITERS + j: 8d}\t{y_value:.4f}\t{"\t".join(p)}\n")
