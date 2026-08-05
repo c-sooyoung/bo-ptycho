@@ -1,0 +1,25 @@
+#!/bin/bash
+#SBATCH --job-name=Si30V
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --gres=gpu:rtx-6000ada:1
+#SBATCH --time=100:00:00
+#SBATCH --output=/home/swim/slurm-logs/job_%j.log
+
+echo "2V"
+pwd
+hostname
+date
+
+export PATH=/home/shared/MATLAB/R2021a/bin:$PATH
+export PATH=/usr/local/cuda-11.4/bin:$PATH
+export LD_LIBRARY_PATH=/usr/local/cuda-11.4/lib64:$LD_LIBRARY_PATH
+
+source /home/swim/bo-ptycho/venv/bin/activate
+
+cat examples/260805-Si/Si_30V3_2.yaml
+python -u main.py examples/260805-Si/Si_30V3_2.yaml
+
+date
+echo "SLURM JOB FINISHED"
