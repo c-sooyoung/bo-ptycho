@@ -5,10 +5,8 @@ import yaml
 import pipelines
 
 def main(config_yaml):
-
     with open(config_yaml, 'r') as f:
         config = yaml.safe_load(f)
-
 
     job_types = {
         'random+sobo': pipelines.sobo_pipeline
