@@ -1,15 +1,17 @@
+import os
 import sys
 import yaml
 
-import job
+import pipelines
 
 def main(config_yaml):
 
     with open(config_yaml, 'r') as f:
         config = yaml.safe_load(f)
 
+
     job_types = {
-        'random+sobo': job.sobo_job
+        'random+sobo': pipelines.sobo_pipeline
     }
 
     job_types[config['job']['type']](config)
