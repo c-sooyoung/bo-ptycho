@@ -1,5 +1,5 @@
 job:
-  job_type: "random+sobo"
+  type: "random+sobo"
   random_iters: 30
   sobo_iters: 300
 
