@@ -1,11 +1,11 @@
 job:
   type: "random+sobo"
-  random_iters: 30
-  sobo_iters: 300
+  random_iters: 3
+  sobo_iters: 30
 
 io:
   input_data_path: '/home/swim/Si_project/data/Si2V1_1.mat'
-  result_dir: '/home/swim/bo-ptycho/results/260730-2V'
+  result_dir: '/home/swim/bo-ptycho/results/test'
   verbosity: 1
 
 ptycho:
