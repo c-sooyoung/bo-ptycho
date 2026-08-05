@@ -1,7 +1,7 @@
 from typing import Any
 import time
 import random
-from ptycho.ptycho_base import PtychoEngine
+from ptycho.base import PtychoEngine
 
 class ExamplePtychoEngine(PtychoEngine):
 

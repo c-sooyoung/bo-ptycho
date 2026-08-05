@@ -1,7 +1,7 @@
 import os
 import copy
 import numpy as np
-from bo.bo_base import BOEngine
+from bo.base import BOEngine
 
 
 class RandomBOEngine(BOEngine):

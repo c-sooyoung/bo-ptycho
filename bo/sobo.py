@@ -15,7 +15,7 @@ from botorch.sampling.normal import SobolQMCNormalSampler
 from botorch.utils.rounding import approximate_round
 
 
-from bo.bo_base import BOEngine
+from bo.base import BOEngine
 
 
 class SingleObjectiveBOEngine(BOEngine):

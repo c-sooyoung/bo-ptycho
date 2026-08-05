@@ -1,3 +1,3 @@
-from .bo_base import BOEngine
+from .base import BOEngine
 from .random import RandomBOEngine
 from .sobo import SingleObjectiveBOEngine
