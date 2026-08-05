@@ -2,11 +2,9 @@ import os
 import sys
 import shutil
 import subprocess
-import re
-from typing import Any
 from scipy.io import loadmat
 import numpy as np
-from ptycho.ptycho_base import PtychoEngine
+from ptycho.base import PtychoEngine
 
 
 class FoldSlicePtychoEngine(PtychoEngine):
@@ -16,10 +14,14 @@ class FoldSlicePtychoEngine(PtychoEngine):
         self._output_dir = os.path.join(config['io']['result_dir'], 'fold_slice')
         self._fold_slice_path = self.config['ptycho']['path']
         self._setup_txt_path = os.path.join(self._output_dir, 'setup.txt')
-        self._verbosity = self.config['io'].get('verbosity', 0)
+        self.metric_methods = {
+            'log_fourier': self._log_fourier_metric,
+        }
 
 
     def run(self, run_id="") -> None:
+
+        # generate setup.txt for fold_slice input
         fold_slice_dict = {}
         fold_slice_dict['raw_data'] = self.config['io']['input_data_path']
         fold_slice_dict['result_dir'] = os.path.join(self._output_dir, '')
@@ -37,6 +39,7 @@ class FoldSlicePtychoEngine(PtychoEngine):
             for key, value in fold_slice_dict.items():
                 f.write(f"{key} {value}\n")
 
+        # execute matlab
         matlab_commands = [
             f"cd('{self._fold_slice_path}');",
             "cd('ptycho');",
@@ -60,6 +63,7 @@ class FoldSlicePtychoEngine(PtychoEngine):
 
         p.wait()
 
+        # get output of fold_slice
         roi_dir = os.path.join(
             self._output_dir,
             f"{self.config['ptycho']['params']['scan_number']}",
@@ -75,9 +79,26 @@ class FoldSlicePtychoEngine(PtychoEngine):
             raise FileNotFoundError(f"{image_path} does not exist. Please check the fold_slice output.")
 
         self._output = loadmat(mat_path)
-        self._metric = -np.log(float(self._output['outputs']['fourier_error_out'][0][0].squeeze()[-1]))
 
+        log_fourier_error = self._log_fourier_metric()
         os.makedirs(os.path.join(self.config['io']['result_dir'], "mat"), exist_ok=True)
         os.makedirs(os.path.join(self.config['io']['result_dir'], "tiff"), exist_ok=True)
-        shutil.copy(mat_path, os.path.join(self.config['io']['result_dir'], "mat", f"{self._metric:.4f}_{run_id}.mat"))
-        shutil.copy(image_path, os.path.join(self.config['io']['result_dir'], "tiff", f"{self._metric:.4f}_{run_id}.tiff"))
+        shutil.copy(mat_path, os.path.join(self.config['io']['result_dir'], "mat", f"{log_fourier_error:.4f}_{run_id}.mat"))
+        shutil.copy(image_path, os.path.join(self.config['io']['result_dir'], "tiff", f"{log_fourier_error:.4f}_{run_id}.tiff"))
+
+
+    def metric(self, names):
+        requested_names = [names] if isinstance(names, str) else list(names)
+        unsupported = [n for n in requested_names if n not in self.metric_methods]
+        if unsupported: raise ValueError(f"Metric(s) {unsupported} not implemented. Available metrics: {self.metric_methods.keys()}")
+
+        if isinstance(names, (list, tuple)):
+            return [self.metric_methods[name]() for name in names]  # MOBO
+        else:
+            return self.metric_methods[names]()                     # SOBO
+
+
+    def _log_fourier_metric(self) -> float:
+        if self._output is None:
+            raise RuntimeError("Must call run() before requesting metrics.")
+        return -np.log(float(self._output['outputs']['fourier_error_out'][0][0].squeeze()[-1]))
