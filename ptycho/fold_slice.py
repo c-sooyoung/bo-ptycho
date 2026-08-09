@@ -81,9 +81,9 @@ class FoldSlicePtychoEngine(PtychoEngine):
         self._output = loadmat(mat_path)
 
         log_fourier_error = self._log_fourier_metric()
-        os.makedirs(os.path.join(self.config['io']['result_dir'], "mat"), exist_ok=True)
+        # os.makedirs(os.path.join(self.config['io']['result_dir'], "mat"), exist_ok=True)
         os.makedirs(os.path.join(self.config['io']['result_dir'], "tiff"), exist_ok=True)
-        shutil.copy(mat_path, os.path.join(self.config['io']['result_dir'], "mat", f"{log_fourier_error:.4f}_{run_id}.mat"))
+        # shutil.copy(mat_path, os.path.join(self.config['io']['result_dir'], "mat", f"{log_fourier_error:.4f}_{run_id}.mat")) # saving .mat files takes a lot of space (expect 20+ GB for 64*64 scan size, 300 iterations)
         shutil.copy(image_path, os.path.join(self.config['io']['result_dir'], "tiff", f"{log_fourier_error:.4f}_{run_id}.tiff"))
 
 
