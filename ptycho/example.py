@@ -8,7 +8,6 @@ class ExamplePtychoEngine(PtychoEngine):
     def __init__(self, config):
         super().__init__(config)
 
-    # run single ptychography job based on `config`
     def run(self, run_id="") -> None:
         print(f"[{run_id}] [ExamplePtychoEngine] Sleeping for 0.1 second.")
         time.sleep(0.1)
