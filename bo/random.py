@@ -37,20 +37,23 @@ class RandomBOEngine(BOEngine):
                 self.train_y = train_y
         
 
-    def ask(self):
+    def ask(self, n = 1):
         config = self.config
-        next_config = copy.deepcopy(config)
+        next_configs = []
 
-        for param in self.params:
-            radius = config['bo']['params'][param]['radius']
-            center = config['ptycho']['params'][param]
-            modulation = radius * (np.random.rand() - 0.5) * 2
-            next_value = center + modulation
-            if self.param_types[param] == 'int':
-                next_value = round(next_value)
-            next_config['ptycho']['params'][param] = next_value
+        for _ in range(n):
+            next_config = copy.deepcopy(config)
+            for param in self.params:
+                radius = config['bo']['params'][param]['radius']
+                center = config['ptycho']['params'][param]
+                modulation = radius * (np.random.rand() - 0.5) * 2
+                next_value = center + modulation
+                if self.param_types[param] == 'int':
+                    next_value = round(next_value)
+                next_config['ptycho']['params'][param] = next_value
+            next_configs.append(next_config)
 
-        return next_config
+        return next_configs
 
 
     def tell(self, job_config, y_value):

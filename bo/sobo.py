@@ -52,7 +52,7 @@ class SingleObjectiveBOEngine(BOEngine):
         self.acquisition = config['bo']['acquisition']
 
 
-    def ask(self):
+    def ask(self, n = 1):
 
         train_x = torch.from_numpy(self.train_x)
         train_y = torch.from_numpy(self.train_y).unsqueeze(-1) # shape: (BOiter, 1)
@@ -98,44 +98,41 @@ class SingleObjectiveBOEngine(BOEngine):
         sampler = SobolQMCNormalSampler(sample_shape=torch.Size([512]))
 
         if self.acquisition == 'ucb':
-            beta = 0.2
-            print("Acquisition: UCB | Beta: {} (fixed)".format(beta))
-            acqf = qUpperConfidenceBound(gp, beta=beta, sampler=sampler)
+            acqf = qUpperConfidenceBound(gp, beta=self.config['bo']['beta'], sampler=sampler)
         elif self.acquisition == 'ei':
-            best_f = train_y.max()
-            print("Acquisition: LogEI  best_f: {:.6f}".format(best_f.item()))
-            acqf = qLogExpectedImprovement(gp, best_f=best_f, sampler=sampler)
+            acqf = qLogExpectedImprovement(gp, best_f=train_y.max(), sampler=sampler)
         else:
             raise NotImplementedError(f"Acquisition function {self.acquisition} is not implemented. Current options: 'ucb', 'ei'")
     
-        # Full [0,1]^d search (trust region disabled)
         acqf_bounds = torch.stack([
             torch.zeros(train_x.shape[1], dtype=torch.double),
             torch.ones(train_x.shape[1], dtype=torch.double),
         ])
 
-        candidate, _ = optimize_acqf(
+        candidates, _ = optimize_acqf(
             acq_function=acqf,
             bounds=acqf_bounds,
-            q=1,
+            q=n,
             num_restarts=20,
             raw_samples=1024,
             post_processing_func=self._pr_post_processing,  # PR applied here
             sequential=True,
         )
 
-        new_x = candidate.detach() * (bounds[1] - bounds[0]) + bounds[0]
+        new_xs = candidates.detach() * (bounds[1] - bounds[0]) + bounds[0]
 
         # Hard-round integer dims (final guarantee)
         for i in self.integer_indices:
-            new_x[:, i] = torch.round(new_x[:, i])
+            new_xs[:, i] = torch.round(new_xs[:, i])
 
-        next_config = copy.deepcopy(self.config)
-
-        for i, param in enumerate(self.params):
-            next_config['ptycho']['params'][param] = new_x[0,i].item()
+        next_configs = []
+        for i in range(n):
+            next_config = copy.deepcopy(self.config)
+            for j, param in enumerate(self.params):
+                next_config['ptycho']['params'][param] = new_xs[i,j].item()
+            next_configs.append(next_config)
         
-        return next_config
+        return next_configs
 
 
     def _pr_post_processing(self, X):

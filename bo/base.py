@@ -7,7 +7,7 @@ class BOEngine(ABC):
         self.state = None
 
     @abstractmethod
-    def ask(self):
+    def ask(self, n: int = 1) -> list[dict]:
         pass
 
     @abstractmethod
