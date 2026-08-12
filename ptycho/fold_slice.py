@@ -11,15 +11,16 @@ class FoldSlicePtychoEngine(PtychoEngine):
 
     def __init__(self, config):
         super().__init__(config)
-        self._output_dir = os.path.join(config['io']['result_dir'], 'fold_slice')
         self._fold_slice_path = self.config['ptycho']['path']
-        self._setup_txt_path = os.path.join(self._output_dir, 'setup.txt')
         self.metric_methods = {
             'log_fourier': self._log_fourier_metric,
         }
 
 
     def run(self, run_id="") -> None:
+
+        self._output_dir = os.path.join(self.config['io']['result_dir'], f'fold_slice-{run_id}')
+        self._setup_txt_path = os.path.join(self._output_dir, 'setup.txt')
 
         # generate setup.txt for fold_slice input
         fold_slice_dict = {}
@@ -82,9 +83,11 @@ class FoldSlicePtychoEngine(PtychoEngine):
 
         log_fourier_error = self._log_fourier_metric()
         # os.makedirs(os.path.join(self.config['io']['result_dir'], "mat"), exist_ok=True)
-        os.makedirs(os.path.join(self.config['io']['result_dir'], "tiff"), exist_ok=True)
+        # os.makedirs(os.path.join(self.config['io']['result_dir'], "tiff"), exist_ok=True)
         # shutil.copy(mat_path, os.path.join(self.config['io']['result_dir'], "mat", f"{log_fourier_error:.4f}_{run_id}.mat")) # saving .mat files takes a lot of space (expect 20+ GB for 64*64 scan size, 300 iterations)
-        shutil.copy(image_path, os.path.join(self.config['io']['result_dir'], "tiff", f"{log_fourier_error:.4f}_{run_id}.tiff"))
+        # shutil.copy(image_path, os.path.join(self.config['io']['result_dir'], "tiff", f"{log_fourier_error:.4f}_{run_id}.tiff"))
+
+        shutil.rmtree(self._output_dir)
 
 
     def metric(self, names):

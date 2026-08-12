@@ -3,7 +3,7 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=1
-#SBATCH --gres=gpu:rtx-6000ada:1
+#SBATCH --gres=gpu:rtx-6000ada:4
 #SBATCH --time=100:00:00
 #SBATCH --output=/home/swim/slurm-logs/job_%j.log
 
