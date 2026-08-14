@@ -2,12 +2,11 @@
 #SBATCH --job-name=Si2V
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
+#SBATCH --cpus-per-task=16
 #SBATCH --gres=gpu:rtx-6000ada:4
 #SBATCH --time=100:00:00
 #SBATCH --output=/home/swim/slurm-logs/job_%j.log
 
-echo "2V"
 pwd
 hostname
 date
@@ -18,8 +17,10 @@ export LD_LIBRARY_PATH=/usr/local/cuda-11.4/lib64:$LD_LIBRARY_PATH
 
 source /home/swim/bo-ptycho/venv/bin/activate
 
-cat config.yaml
-python -u main.py config.yaml
+YAML="config.yaml"
+
+cat $YAML
+python -u main.py $YAML
 
 date
 echo "SLURM JOB FINISHED"
