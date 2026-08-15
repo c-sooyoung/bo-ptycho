@@ -1,6 +1,11 @@
+job:
+  type: "random+sobo"
+  random_iters: 16
+  sobo_iters: 512
+
 io:
-  input_data_path: '/home/swim/shared/Si_project/data/Si2V1_2.mat'
-  result_dir: '/home/swim/bo-ptycho/results/Si2V1_2/260814-2'
+  input_data_path: '/home/swim/shared/Si_project/data/Si30V3_2.mat'
+  result_dir: '/home/swim/bo-ptycho/results/Si30V3_2/260816'
   verbosity: 1
 
 ptycho:
@@ -9,14 +14,14 @@ ptycho:
   params:
     voltage: 200
     alpha_max: 30
-    defocus: -250
-    rot_ang: 0.3
-    Nlayers: 20
-    thickness: 250
-    rbf: 37
-    tilt_x: 2
-    tilt_y: 0 
-    scan_step_size: 0.36
+    defocus: 200
+    rot_ang: 0.1
+    Nlayers: 30
+    thickness: 650
+    rbf: 38
+    tilt_x: 5
+    tilt_y: 3 
+    scan_step_size: 0.35
 
     Niter: 100
     Niter_save_results: 100
@@ -38,11 +43,16 @@ ptycho:
     regularize_layers: 0.2
     variable_probe: false
 
-search:
-  metric: log_fourier
+bo:
+  batch: 4
+  acquisition: 'ucb'
+  beta: 0.1
+  metric: 'log_fourier'
   params:
+    alpha_max:
     defocus:
       radius: 100
+    rot_ang:
     Nlayers:
       radius: 5
       type: int
@@ -50,18 +60,3 @@ search:
       radius: 150
   train_x:
   train_y:
-
-sequence:
-  # - sampler: fixed
-
-  # - sampler: grid
-  #   points:
-
-  - sampler: random
-    samples: 32
-
-  - sampler: sobo
-    iterations: 512
-    batch: 4
-    acquisition: 'ucb'
-    beta: 0.1

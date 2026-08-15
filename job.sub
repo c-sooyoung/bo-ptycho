@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=Si2V
+#SBATCH --job-name=Si30V
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=16
