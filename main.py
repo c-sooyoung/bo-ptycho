@@ -11,10 +11,15 @@ def main(config_yaml):
 
     result_dir = config["io"]["result_dir"]
     if os.path.exists(result_dir):
+        if sys.stdin.isatty():
+            answer = input(f"Will delete {result_dir}: [y/N]\n> ").strip().lower() == 'y'
+            if not answer:
+                print("Aborted.")
+                return         
         shutil.rmtree(result_dir)
+    
     os.makedirs(result_dir, exist_ok=True)
     shutil.copy(config_yaml, os.path.join(result_dir, os.path.basename(config_yaml)))
-
     pipelines.job_types[config['job']['type']](config)
     
 
