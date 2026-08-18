@@ -1,9 +1,9 @@
 import copy
 import numpy as np
-from bo.base import BOEngine
+from samplers.base import Sampler
 
 
-class RandomBOEngine(BOEngine):
+class RandomSampler(Sampler):
 
     def __init__(self, config):
         super().__init__(config)

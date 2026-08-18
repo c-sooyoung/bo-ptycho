@@ -15,10 +15,10 @@ from botorch.sampling.normal import SobolQMCNormalSampler
 from botorch.utils.rounding import approximate_round
 
 
-from bo.base import BOEngine
+from samplers.base import Sampler
 
 
-class SingleObjectiveBOEngine(BOEngine):
+class SOBOSampler(Sampler):
     def __init__(self, config):
         super().__init__(config)
         self.acquisition = config['bo']['acquisition']

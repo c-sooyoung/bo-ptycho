@@ -2,7 +2,7 @@ import os
 import traceback
 import multiprocessing as mp
 
-import bo
+import samplers
 import ptycho
 
 def run_ptycho_worker(worker_id, gpu_token, job_config, metric, run_id, result_queue):
@@ -71,7 +71,7 @@ def sobo_pipeline(config):
 
 
     ############################ RANDOM SAMPLING ###############################
-    randombo = bo.RandomBOEngine(config)
+    randombo = samplers.RandomSampler(config)
 
     for j in range(RANDOM_ITERS):
         print(f"RANDOM sampling; iteration {j}")
@@ -81,7 +81,7 @@ def sobo_pipeline(config):
             randombo.tell(job_config, y_value)
 
     ############################  SOBO SAMPLING  ###############################
-    sobo = bo.SingleObjectiveBOEngine(config)
+    sobo = samplers.SOBOSampler(config)
     sobo.train_x = randombo.train_x
     sobo.train_y = randombo.train_y
 

@@ -3,7 +3,7 @@ import os
 import numpy as np
 
 
-class BOEngine(ABC):
+class Sampler(ABC):
     def __init__(self, config):
         self.config = config
         self.params = [key for key, spec in config["bo"]["params"].items() if spec is not None]
