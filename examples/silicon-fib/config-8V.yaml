@@ -1,11 +1,11 @@
 job:
-  type: 'random+sobo'
+  type: "random+sobo"
   random_iters: 16
   sobo_iters: 128
 
 io:
-  input_data_path: '/home/swim/shared/Si_project/data/Si2V1_2.mat'
-  result_dir: '/home/swim/bo-ptycho/results/test'
+  input_data_path: '/home/swim/shared/Si_project/data/Si8V2_2.mat'
+  result_dir: '/home/swim/bo-ptycho/results/Si8V2_2/260815'
   verbosity: 1
 
 ptycho:
@@ -14,12 +14,12 @@ ptycho:
   params:
     voltage: 200
     alpha_max: 30
-    defocus: -250
-    rot_ang: 0.3
-    Nlayers: 20
-    thickness: 250
+    defocus: -200
+    rot_ang: 1.3
+    Nlayers: 25
+    thickness: 350
     rbf: 37
-    tilt_x: 2
+    tilt_x: 4
     tilt_y: 0 
     scan_step_size: 0.36
 
@@ -43,15 +43,16 @@ ptycho:
     regularize_layers: 0.2
     variable_probe: false
 
-
 bo:
   batch: 4
   acquisition: 'ucb'
   beta: 0.1
   metric: 'log_fourier'
   params:
+    alpha_max:
     defocus:
       radius: 100
+    rot_ang:
     Nlayers:
       radius: 5
       type: int

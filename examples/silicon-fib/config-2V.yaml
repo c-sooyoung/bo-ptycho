@@ -5,7 +5,7 @@ job:
 
 io:
   input_data_path: '/home/swim/shared/Si_project/data/Si2V1_2.mat'
-  result_dir: '/home/swim/bo-ptycho/results/test'
+  result_dir: '/home/swim/bo-ptycho/results/Si2V1_2/260817'
   verbosity: 1
 
 ptycho:
